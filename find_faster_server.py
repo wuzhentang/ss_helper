@@ -8,6 +8,7 @@ import subprocess
 import json
 import socket
 from copy import deepcopy
+import ssl
 
 from config_ss import remote_server, ss_dir, ss_servers_path
 
@@ -123,10 +124,12 @@ class SetFastServer(object):
             for _ in range(times):
                 beg = time.time()
                 try:
-                    resp = urllib2.urlopen(url, timeout=10)
+                    resp = urllib2.urlopen(url, timeout=3)
                 except urllib2.URLError as ex:
                     print "urlopen error:%s" % (str(ex),)
                 except socket.timeout as ex:
+                    print "urlopen error:%s" % (str(ex),)
+                except ssl.SSLError as ex:
                     print "urlopen error:%s" % (str(ex),)
                 end = time.time()
 
